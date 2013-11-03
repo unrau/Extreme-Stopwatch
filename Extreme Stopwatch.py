@@ -2,7 +2,7 @@
 # ~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~ #
 # =========================================================================== #
 # EXTREME STOPWATCH!!!                                                        #
-# v1.74                                                                       #
+# v1.75                                                                       #
 # By Chloe Unrau 2013                                                         #
 # An event-driven program in Python created for CodeSkulptor.org.             #
 # To play, paste this code into codeskulptor.org and press play.              #
@@ -33,24 +33,33 @@ button_width = control_width
 
 # timers
 stopwatch_interval = 100
-# colour_interval : frequency of achievement message colour cycling
+# colour_interval : frequency of event message colour cycling
 colour_interval = 100
-# blink_interval : frequency of achievement message blinking
+# blink_interval : frequency of event message blinking
 blink_interval = 500
 # music_interval : the exact length of the music track
 music_interval = 6007
 
-# text
+# text settings
 score_streak_font_size = 10
 score_message_font_size = 20
 message_event_font_size = 20
 time_font_size = 60
 font_face_all = "monospace"
 colour_time = "#eaedc1"
+colour_time_normal = "#eaedc1"
 colour_time_max = "#b70e0e"
 colour_score = "#9ce4a8"
 colour_streak = "#ffffff"
 colour_stars = "#ffffff"
+
+# achievement messages
+achievement_scores = {}
+achievement_scores[5] = ["5 POINTS", "YOU'VE GOT IT", "FIIIVE GOOOLD RIIINGS", "5 5 5 5 5", "FIRST ACHIEVEMENT"]
+achievement_scores[10] = ["KEEP STOPWATCHING", "10 10 10 10 10", "NOVICE STATUS"]
+achievement_scores[25] = ["OOOOOH, WORK IT", "SHRUBBERY", "25 25 25 25 25", "EXPERT STATUS"]
+achievement_scores[50] = ["HEROIC STATUS", "50 50 50 50 50", "COMMUNIST BATH PARTY"]
+achievement_scores[100] = ["100 POINTS", "EXTREME STOPWATCHIST", "THE HUMAN MUSTACHE", "DIVINE STATUS"]
 
 # colours for rainbow effect of event message
 rainbow = {}
@@ -62,14 +71,6 @@ rainbow[4] = "#ff5151"   #red
 rainbow[5] = "#b95fff"   #purple
 rainbow_colour = 0
 colour_count = 0
-
-# achievement messages
-achievement_scores = {}
-achievement_scores[5] = ["5 POINTS", "YOU'VE GOT IT", "FIIIVE GOOOLD RIIINGS", "5 5 5 5 5", "FIRST ACHIEVEMENT"]
-achievement_scores[10] = ["KEEP STOPWATCHING", "10 10 10 10 10", "NOVICE STATUS"]
-achievement_scores[25] = ["OOOOOH, WORK IT", "SHRUBBERY", "25 25 25 25 25", "EXPERT STATUS"]
-achievement_scores[50] = ["HEROIC STATUS", "50 50 50 50 50", "COMMUNIST BATH PARTY"]
-achievement_scores[100] = ["100 POINTS", "EXTREME STOPWATCHIST", "THE HUMAN MUSTACHE", "DIVINE STATUS"]
 
 # effects
 event_message = ""
@@ -212,7 +213,7 @@ def start_stop_stopwatch():
         music_timer.start()
 
 def reset_stopwatch():
-    global a, b, c, d, time_is_max, my_score, guess_count, current_streak, best_streak, star_x, star_i
+    global a, b, c, d, time_is_max, my_score, guess_count, current_streak, best_streak, star_x, star_i, colour_time
     sound_reset.play()
     # stop the timer
     timer.stop()
@@ -220,6 +221,7 @@ def reset_stopwatch():
     a, b, c, d = 0, 0, 0, 0
     star_x, star_i = 0, 0
     time_is_max = False
+    colour_time = colour_time_normal
     update_time()
     # reset the score and streaks
     my_score, guess_count = 0, 0
@@ -242,7 +244,7 @@ def keydown(key):
 
 def tick():
     """ Increment the timer by 1/10th of a second, and stop if maximum """
-    global a, b, c, d, time_is_max, star_x, star_i
+    global a, b, c, d, time_is_max, star_x, star_i, colour_time
     d += 1
     if d == 10:
         d = 0
@@ -255,10 +257,11 @@ def tick():
                 b = 0
                 a += 1
                 if a == 10:
-                    # stop the timer before the minutes digit becomes 10
+                    # stop the stopwatch before the minutes digit becomes 10
                     timer.stop()
                     # maintain the timer text at its maximum until it is reset
                     a, b, c, d = 9, 5, 9, 9
+                    colour_time = colour_time_max
                     time_is_max = True
                     # play the game-over sound and event message
                     update_event_message(False, my_score)
@@ -293,7 +296,6 @@ def message_blink_tick():
 
 def music_tick():
     if not music_is_muted:
-        music.play()
         music.rewind()
         music.play()
 
@@ -313,12 +315,7 @@ def draw(canvas):
     canvas.draw_image(background, (150, 150), (300, 300), (150, 150), (300, 300))
 
     # draw the stopwatch text
-    if not time_is_max:
-        # normal colour: light yellow
-        canvas.draw_text(time, [centre_x(time, time_font_size, font_face_all), 143], time_font_size, colour_time, font_face_all)
-    else:
-        # maximum time colour: red
-        canvas.draw_text(time, [centre_x(time, time_font_size, font_face_all), 143], time_font_size, colour_time_max, font_face_all)
+    canvas.draw_text(time, [centre_x(time, time_font_size, font_face_all), 143], time_font_size, colour_time, font_face_all)
 
     # draw the score as 'correct guesses / total guesses'
     canvas.draw_text(score_total, [200, 40], score_message_font_size, colour_score, font_face_all)
@@ -382,7 +379,7 @@ music.set_volume(0.5)
 sound_cheevo = simplegui.load_sound("http://www.chloeunrau.com/stuff/achievement.ogg")
 sound_cheevo.set_volume(1.0)
 sound_score = simplegui.load_sound("http://www.chloeunrau.com/stuff/score.ogg")
-sound_score.set_volume(0.5)
+sound_score.set_volume(0.3)
 sound_fail = simplegui.load_sound("http://www.chloeunrau.com/stuff/fail.ogg")
 sound_fail.set_volume(0.5)
 sound_score_streak = simplegui.load_sound("http://www.chloeunrau.com/stuff/score-streak.ogg")
