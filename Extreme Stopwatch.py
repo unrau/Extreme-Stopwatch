@@ -2,7 +2,7 @@
 # ~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~ #
 # =========================================================================== #
 # EXTREME STOPWATCH!!!                                                        #
-# v1.73                                                                       #
+# v1.74                                                                       #
 # By Chloe Unrau 2013                                                         #
 # An event-driven program in Python created for CodeSkulptor.org.             #
 # To play, paste this code into codeskulptor.org and press play.              #
@@ -29,7 +29,7 @@ import random
 frame_width = 300
 frame_height = 300
 control_width = 300
-button_width = 170
+button_width = control_width
 
 # timers
 stopwatch_interval = 100
@@ -143,8 +143,7 @@ def update_event_message(loc_did_score, loc_score):
     if (time_is_max) or (loc_did_score and (loc_score in achievement_scores)) or (new_streak):
 
         # centre the event message
-        message_width = frame.get_canvas_textwidth(event_message, score_message_font_size, font_face_all)
-        message_x = (frame_width / 2) - (message_width / 2)
+        message_x = centre_x(event_message, score_message_font_size, font_face_all)
 
         # play the event message
         if message_displayed == True:
@@ -162,6 +161,11 @@ def update_event_message(loc_did_score, loc_score):
         message_displayed = False
         message_colour_timer.stop()
         message_blink_timer.stop()
+
+def centre_x(text, size, font):
+    """ Returns the x coordinate to centre text horizontally within the frame """
+    text_width = frame.get_canvas_textwidth(text, size, font)
+    return ((frame_width / 2) - (text_width / 2))
 
 
 # Define Event Handlers
@@ -311,10 +315,10 @@ def draw(canvas):
     # draw the stopwatch text
     if not time_is_max:
         # normal colour: light yellow
-        canvas.draw_text(time, [40, 143], time_font_size, colour_time, font_face_all)
+        canvas.draw_text(time, [centre_x(time, time_font_size, font_face_all), 143], time_font_size, colour_time, font_face_all)
     else:
         # maximum time colour: red
-        canvas.draw_text(time, [40, 143], time_font_size, colour_time_max, font_face_all)
+        canvas.draw_text(time, [centre_x(time, time_font_size, font_face_all), 143], time_font_size, colour_time_max, font_face_all)
 
     # draw the score as 'correct guesses / total guesses'
     canvas.draw_text(score_total, [200, 40], score_message_font_size, colour_score, font_face_all)
@@ -398,20 +402,16 @@ frame.set_draw_handler(draw)
 # =============================================================================
 # -----------------------------------------------------------------------------
 
-title = frame.add_label("EXTREME STOPWATCH")
-
-space = frame.add_label("")
-
 button_start_stop = frame.add_button("START / STOP (spacebar)", start_stop_stopwatch, button_width)
 keyboard_start_stop = frame.set_keydown_handler(keydown)
 
 space = frame.add_label("")
 
-button_reset = frame.add_button("RESET (r)", reset_stopwatch, button_width)
+button_mute = frame.add_button("MUTE / UNMUTE MUSIC (m)", mute_unmute, button_width)
 
 space = frame.add_label("")
 
-button_mute = frame.add_button("MUTE / UNMUTE MUSIC (m)", mute_unmute, button_width)
+button_reset = frame.add_button("RESET (r)", reset_stopwatch, button_width)
 
 space = frame.add_label("")
 
