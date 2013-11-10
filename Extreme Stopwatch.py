@@ -1,13 +1,13 @@
 # --------------------------------------------------------------------------- #
 # ~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~ #
 # =========================================================================== #
-# EXTREME STOPWATCH!!!                                                        #
-# v1.75                                                                       #
-# By Chloe Unrau 2013                                                         #
-# An event-driven program in Python created for CodeSkulptor.org.             #
-# To play, paste this code into codeskulptor.org and press play.              #
-#                                                                             #
-# Dedicated to my dad, who needs something to do :)                           #
+# EXTREME STOPWATCH!!! #
+# v1.76
+# By Chloe Unrau 2013 #
+# An event-driven program in Python created for CodeSkulptor.org. #
+# To play, paste this code into codeskulptor.org and press play. #
+# #
+# Dedicated to my dad, who needs something to do :) #
 # =========================================================================== #
 # ~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~==~ * ~ #
 # --------------------------------------------------------------------------- #
@@ -63,12 +63,12 @@ achievement_scores[100] = ["100 POINTS", "EXTREME STOPWATCHIST", "THE HUMAN MUST
 
 # colours for rainbow effect of event message
 rainbow = {}
-rainbow[0] = "#dea7dc"   #pink
-rainbow[1] = "#9ce4a8"   #green
-rainbow[2] = "#fdff7d"   #yellow
-rainbow[3] = "#88d5e1"   #blue
-rainbow[4] = "#ff5151"   #red
-rainbow[5] = "#b95fff"   #purple
+rainbow[0] = "#dea7dc"  #pink
+rainbow[1] = "#9ce4a8"  #green
+rainbow[2] = "#fdff7d"  #yellow
+rainbow[3] = "#88d5e1"  #blue
+rainbow[4] = "#ff5151"  #red
+rainbow[5] = "#b95fff"  #purple
 rainbow_colour = 0
 colour_count = 0
 
@@ -115,10 +115,10 @@ def update_score():
 
 def update_event_message(loc_did_score, loc_score):
     """
-    Generate event messages
+Generate event messages
 
-    NOTE: Achievement badges are drawn in the draw handler, independant of this function
-    """
+NOTE: Achievement badges are drawn in the draw handler, independant of this function
+"""
     global event_message, message_x, message_displayed, num_blinks
 
     # set the game over message if the timer is at its maximum
