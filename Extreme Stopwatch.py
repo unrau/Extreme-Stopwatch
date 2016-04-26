@@ -3,7 +3,7 @@
 # =========================================================================== #
 # EXTREME STOPWATCH!!! #
 # v1.76
-# By Chloe Unrau 2013 #
+# By Tristen Unrau 2013 #
 # An event-driven program in Python created for CodeSkulptor.org. #
 # To play, paste this code into codeskulptor.org and press play. #
 # #
